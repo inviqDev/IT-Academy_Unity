@@ -6,7 +6,7 @@ using static UnityEngine.InputSystem.InputAction;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform playerBody;
-    [SerializeField] private Transform crosshair;
+    [SerializeField] private Transform crosshairPosition;
     [SerializeField] private ProjectileContainer projectileContainer;
 
     private CharacterController _controller;
@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
         var moveDelta = _actions.Player.Move.ReadValue<Vector2>();
         var lookDelta = _actions.Player.Look.ReadValue<Vector2>();
+        Debug.Log(lookDelta);
 
         MovePlayer(moveDelta);
         RotatePlayerX(lookDelta);
@@ -62,13 +63,12 @@ public class PlayerController : MonoBehaviour
         _crosshairRotationY += rotationY;
 
         _crosshairRotationY = Mathf.Clamp(_crosshairRotationY, -20f, 20f);
-        crosshair.localEulerAngles = new Vector3(_crosshairRotationY, 0f, 0f);
+        crosshairPosition.localEulerAngles = new Vector3(_crosshairRotationY, 0f, 0f);
     }
 
     private void LaunchProjectile(CallbackContext context)
     {
-        var direction = crosshair.forward;
-        projectileContainer.LaunchNextProjectile(direction);
+        projectileContainer.LaunchNextProjectile();
     }
 
     private void OnEnable()

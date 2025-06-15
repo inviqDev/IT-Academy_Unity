@@ -4,13 +4,11 @@ using UnityEngine;
 public class ProjectileContainer : MonoBehaviour
 {
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private Transform crosshair;
-    
-    private Stack<GameObject> _projectiles;
-    private Vector3 _defaultPosition;
-    private Quaternion _defaultRotation;
+    [SerializeField] private Transform crosshairMarker;
 
-    public int ProjectilesCount { get; private set; } = 20;
+    private Queue<GameObject> _projectiles;
+
+    public int ProjectilesCount { get; private set; } = 30;
 
     private void Start()
     {
@@ -19,38 +17,31 @@ public class ProjectileContainer : MonoBehaviour
             Debug.Log("Projectile count is less than 1");
             return;
         }
-        
-        _projectiles = new Stack<GameObject>();
-        _defaultPosition = transform.position;
-        _defaultRotation = transform.rotation;
-        var projectileContainer = transform;
-        
+
+        _projectiles = new Queue<GameObject>();
+
+        projectilePrefab.gameObject.SetActive(false);
         for (var i = 0; i < ProjectilesCount; i++)
         {
-            var newProjectile = Instantiate(projectilePrefab, projectileContainer);
-            PushProjectileToStack(newProjectile);
+            var newProjectile = Instantiate(projectilePrefab, transform);
+            EnqueueProjectile(newProjectile);
         }
     }
 
-    public Vector3 GetProjectileLaunchDirection()
+    public void LaunchNextProjectile()
     {
-        return crosshair.transform.forward;
-    }
-
-    public void LaunchNextProjectile(Vector3 direction)
-    {
-        if (_projectiles.Count < 0) return;
-
-        var projectile = _projectiles.Pop();
+        if (_projectiles.Count < 0 || !_projectiles.TryDequeue(out var projectile)) return;
+        
         projectile.gameObject.SetActive(true);
     }
 
-    public void PushProjectileToStack(GameObject projectile)
+    public void EnqueueProjectile(GameObject projectile)
     {
-        projectile.SetActive(false);
-        projectile.transform.position = _defaultPosition;
-        projectile.transform.rotation = _defaultRotation;
+        projectile.transform.SetParent(transform);
+        projectile.transform.position = transform.parent.position;
+        projectile.transform.rotation = transform.rotation;
 
-        _projectiles.Push(projectile);
+        _projectiles.Enqueue(projectile);
+        projectile.SetActive(false);
     }
 }

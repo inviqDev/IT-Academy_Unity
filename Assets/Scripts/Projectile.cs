@@ -5,19 +5,35 @@ public class Projectile : MonoBehaviour
 {
     private ProjectileContainer _projectileContainer;
     private Rigidbody _projectileRb;
-
-    public float launchForce = 12f;
-    public float lifeTime = 3f;
+    
+    public float launchForce = 50f;
+    public float lifeTime = 2f;
     private float _currentLifeTime;
 
     private void OnEnable()
     {
         _projectileRb ??= GetComponent<Rigidbody>();
         _projectileContainer ??= transform.parent.GetComponent<ProjectileContainer>();
+
+        if (!_projectileContainer)
+        {
+            Debug.LogError("ProjectileContainer not found");
+            return;
+        }
         
+        var direction = transform.parent.forward;
+        transform.parent = null;
+        
+        LaunchProjectileInParticularDirection(direction);
         _currentLifeTime = lifeTime;
-        var direction = _projectileContainer.GetProjectileLaunchDirection();
-        _projectileRb.AddRelativeForce(direction * launchForce, ForceMode.Impulse);
+    }
+
+    private void LaunchProjectileInParticularDirection(Vector3 direction)
+    {
+        _projectileRb.linearVelocity = Vector3.zero;
+        _projectileRb.angularVelocity = Vector3.zero;
+        
+        _projectileRb.AddForce(direction * launchForce, ForceMode.Impulse);
     }
 
     private void Update()
@@ -31,6 +47,6 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        _projectileContainer.PushProjectileToStack(gameObject);
+        _projectileContainer.EnqueueProjectile(gameObject);
     }
 }
