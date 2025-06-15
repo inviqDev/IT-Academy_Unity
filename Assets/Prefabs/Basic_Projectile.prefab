@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2816018321963973466}
   - component: {fileID: 4615753275816467049}
   - component: {fileID: 2628050884232180772}
-  - component: {fileID: 6731682461667497438}
-  m_Layer: 0
-  m_Name: Projectile
+  - component: {fileID: 5428425992327035260}
+  m_Layer: 7
+  m_Name: Basic_Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,7 +104,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -137,7 +137,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6731682461667497438
+--- !u!114 &5428425992327035260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,8 +146,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1461735168870673874}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e586b1e3954e0924ea60f174a52f22a6, type: 3}
+  m_Script: {fileID: 11500000, guid: c0c8bf233c8120c46a1749714b83d5dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 50
-  lifeTime: 2

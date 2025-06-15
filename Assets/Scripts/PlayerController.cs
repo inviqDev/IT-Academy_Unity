@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform playerBody;
     [SerializeField] private Transform crosshairPosition;
-    [SerializeField] private ProjectileContainer projectileContainer;
 
+    private ProjectilesSpawner _projectilesSpawner;
     private CharacterController _controller;
     private InputSystem_Actions _actions;
     private Action<CallbackContext> _attackCallBack;
@@ -27,8 +27,7 @@ public class PlayerController : MonoBehaviour
 
         var moveDelta = _actions.Player.Move.ReadValue<Vector2>();
         var lookDelta = _actions.Player.Look.ReadValue<Vector2>();
-        Debug.Log(lookDelta);
-
+        
         MovePlayer(moveDelta);
         RotatePlayerX(lookDelta);
     }
@@ -68,7 +67,15 @@ public class PlayerController : MonoBehaviour
 
     private void LaunchProjectile(CallbackContext context)
     {
-        projectileContainer.LaunchNextProjectile();
+        _projectilesSpawner ??= GetComponent<ProjectilesSpawner>();
+        
+        if (!_projectilesSpawner)
+        {
+            Debug.Log("Projectiles spawner component wasn't found on the Player");
+            return;
+        }
+        
+        _projectilesSpawner.LaunchNextProjectile();
     }
 
     private void OnEnable()
@@ -77,7 +84,7 @@ public class PlayerController : MonoBehaviour
         _actions.Enable();
 
         _attackCallBack = LaunchProjectile;
-        _actions.Player.Attack.performed += _attackCallBack;
+        _actions.Player.Attack.started += _attackCallBack;
     }
 
     private void OnDisable()
