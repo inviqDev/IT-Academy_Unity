@@ -16,7 +16,9 @@ public class ProjectilesSpawner : MonoBehaviour
             return;
         }
 
+        projectilePrefab.SetActive(false);
         _projectiles = new Queue<GameObject>();
+        
         for (var i = 0; i < spawnAmount; i++)
         {
             var newProjectile = Instantiate(projectilePrefab);

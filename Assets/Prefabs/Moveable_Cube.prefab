@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 596523715802024639}
   - component: {fileID: 5129254836048174283}
   - component: {fileID: 2785792633122303530}
-  m_Layer: 0
-  m_Name: Moveable_Cubes
+  m_Layer: 8
+  m_Name: Moveable_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

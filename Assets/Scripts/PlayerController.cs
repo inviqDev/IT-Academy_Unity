@@ -16,8 +16,9 @@ public class PlayerController : MonoBehaviour
     private readonly Vector3 _gravity = new(0.0f, -9.81f, 0.0f);
     public CharacterController Controller => _controller ??= GetComponent<CharacterController>();
 
-    public float moveSpeed;
-    public float sensitivity;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float sensitivity;
+    [SerializeField] private float topBound;
 
     private float _crosshairRotationY;
 
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
     {
         _crosshairRotationY += rotationY;
 
-        _crosshairRotationY = Mathf.Clamp(_crosshairRotationY, -20f, 20f);
+        _crosshairRotationY = Mathf.Clamp(_crosshairRotationY, -topBound, topBound);
         crosshairPosition.localEulerAngles = new Vector3(_crosshairRotationY, 0f, 0f);
     }
 

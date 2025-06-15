@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -44,7 +45,7 @@ public class ProjectileBase : MonoBehaviour
         _spawner.EnqueueProjectile(gameObject);
     }
 
-    private protected void LaunchProjectile()
+    private void LaunchProjectile()
     {
         _projectileRb ??= GetComponent<Rigidbody>();
 
@@ -61,5 +62,10 @@ public class ProjectileBase : MonoBehaviour
         _projectileRb.angularVelocity = Vector3.zero;
 
         _projectileRb.AddForce(direction * launchForce, ForceMode.Impulse);
+    }
+
+    private void OnEnable()
+    {
+        LaunchProjectile();
     }
 }
